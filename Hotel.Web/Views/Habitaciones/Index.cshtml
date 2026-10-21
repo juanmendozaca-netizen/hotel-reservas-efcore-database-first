@@ -1,0 +1,20 @@
+@model IEnumerable<Hotel.Web.Models.Habitacion>
+@{
+    ViewData["Title"] = "Habitaciones";
+}
+<div class="page-heading d-flex justify-content-between align-items-center">
+    <div><span class="eyebrow">ALOJAMIENTO</span><h1>Habitaciones</h1><p class="text-muted">Administra las habitaciones disponibles del hotel.</p></div>
+    <a asp-action="Create" class="btn btn-primary">Nueva habitación</a>
+</div>
+@if (TempData["Mensaje"] is string mensaje) { <div class="alert alert-success">@mensaje</div> }
+<form method="get" class="card filter-card mb-4">
+    <div class="card-body row align-items-end g-3">
+        <div class="col-md-5"><label class="form-label">Tipo de habitación</label><select name="tipo" class="form-select" asp-items="ViewBag.Tipos"><option value="">Todos los tipos</option></select></div>
+        <div class="col-md-auto"><button class="btn btn-outline-primary">Filtrar</button></div>
+        <div class="col-md-auto"><a asp-action="Index" class="btn btn-link">Limpiar</a></div>
+    </div>
+</form>
+<div class="card table-card"><div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>Número</th><th>Piso</th><th>Tipo</th><th>Capacidad</th><th>Precio por noche</th><th></th></tr></thead><tbody>
+@foreach (var item in Model) { <tr><td class="fw-semibold">@item.Numero</td><td>@item.Piso</td><td><span class="badge-soft">@item.IdTipoHabitacionNavigation.Nombre</span></td><td>@item.IdTipoHabitacionNavigation.Capacidad personas</td><td>S/ @item.IdTipoHabitacionNavigation.PrecioNoche.ToString("N2")</td><td class="text-end"><a asp-action="Details" asp-route-id="@item.IdHabitacion" class="btn btn-sm btn-light">Ver</a> <a asp-action="Edit" asp-route-id="@item.IdHabitacion" class="btn btn-sm btn-light">Editar</a> <a asp-action="Delete" asp-route-id="@item.IdHabitacion" class="btn btn-sm btn-outline-danger">Desactivar</a></td></tr> }
+@if (!Model.Any()) { <tr><td colspan="6" class="text-center py-5 text-muted">No hay habitaciones activas para mostrar.</td></tr> }
+</tbody></table></div></div>
